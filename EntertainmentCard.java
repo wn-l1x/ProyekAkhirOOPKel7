@@ -1,6 +1,6 @@
 public class EntertainmentCard extends CardView
 {
-    String appName;
-    String filePath;
-    Category category;
+    public EntertainmentCard(String appName, String filePath, Category category) {
+        super(appName, filePath, category);
+    }
 }

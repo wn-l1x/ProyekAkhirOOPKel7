@@ -1,39 +1,8 @@
-
-/**
- * Write a description of class EntertainmentCreator here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
 public class EntertainmentCreator extends CardCreator
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
-    /**
-     * Constructor for objects of class EntertainmentCreator
-     */
-    public EntertainmentCreator()
-    {
-        // initialise instance variables
-        x = 0;
-    }
-
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
-    }
-
     @Override
-    public CardView createCard() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createCard'");
+    public CardView createCard(String appName, String filePath, Category category) {
+        return new EntertainmentCard(appName, filePath, category);
     }
+    
 }

@@ -1,6 +1,7 @@
 public class ProductivityCard extends CardView
 {
-    String appName;
-    String filePath;
-    Category category;
+
+    public ProductivityCard(String appName, String filePath, Category category) {
+        super(appName, filePath, category);
+    }
 }

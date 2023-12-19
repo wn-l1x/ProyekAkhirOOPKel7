@@ -1,6 +1,6 @@
 public class UtilitiesCard extends CardView
 {
-    String appName;
-    String filePath;
-    Category category;
+    public UtilitiesCard(String appName, String filePath, Category category) {
+        super(appName, filePath, category);
+    }
 }
