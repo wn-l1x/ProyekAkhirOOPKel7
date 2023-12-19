@@ -9,7 +9,7 @@ public  class CardCreator
             case PRODUCTIVITY:
                 return new ProductivityCard(appName, filePath);
             case UTILITIES:
-                return new EntertainmentCard(appName, filePath);
+                return new UtilitiesCard(appName, filePath);
             default:
                 throw new IllegalArgumentException("Unknown category");
         }
