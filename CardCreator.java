@@ -1,4 +1,4 @@
-public  class CardCreator
+public class CardCreator
 {
     public CardView createCard(Category category, String appName, String filePath){
         switch (category) {

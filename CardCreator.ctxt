@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=CardCreator
+comment1.params=category\ appName\ filePath
+comment1.target=CardView\ createCard(Category,\ java.lang.String,\ java.lang.String)
+numComments=2
