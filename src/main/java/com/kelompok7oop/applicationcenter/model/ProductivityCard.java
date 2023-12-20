@@ -1,4 +1,7 @@
-package com.kelompok7oop.applicationcenter;
+package com.kelompok7oop.applicationcenter.model;
+
+import com.kelompok7oop.applicationcenter.model.CardView;
+
 public class ProductivityCard extends CardView
 {
 

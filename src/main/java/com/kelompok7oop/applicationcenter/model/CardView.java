@@ -1,9 +1,10 @@
-package com.kelompok7oop.applicationcenter;
+package com.kelompok7oop.applicationcenter.model;
+
 public abstract class CardView
 {
-    String appName;
-    String filePath;
-    String iconPath;
+    public String appName;
+    public String filePath;
+    public String iconPath;
 
     public CardView(String appName, String filePath, String iconPath){
         this.appName = appName;

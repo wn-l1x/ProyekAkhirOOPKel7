@@ -1,16 +1,26 @@
 package com.kelompok7oop.applicationcenter;
 
+import com.kelompok7oop.applicationcenter.model.CardCreator;
+import com.kelompok7oop.applicationcenter.model.CardView;
+import com.kelompok7oop.applicationcenter.model.Category;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +36,7 @@ public class AppCenterView {
     public Button addButton;
     public Button removeButton;
     public Button filterButton;
+    private Category filterCategory = Category.NO_CATEGORY;
     public AppCenterView(Stage stage) {
         this.stage = stage;
     }
@@ -46,20 +57,20 @@ public class AppCenterView {
 
         GridPane gridPane = new GridPane();
         for (i = 0; i < size; i++) {
-                Image img = new Image(iconPath.get(i));
-                ImageView view = new ImageView(img);
-                view.setFitHeight(453);
-                view.setFitWidth(300);
-                view.setPreserveRatio(true);
-                Button button = new Button();
-                button.setPrefSize(300, 453);
-                button.setGraphic(view);
-                buttonList.add(button);
-                VBox buttonContainer = new VBox();
-                buttonContainer.getChildren().addAll(button,new javafx.scene.control.Label(appName.get(i)));
-                buttonContainer.setAlignment(Pos.CENTER);
-                gridPane.add(buttonContainer, i%4, i/4, 1, 1);
-            }
+            Image img = new Image(iconPath.get(i));
+            ImageView view = new ImageView(img);
+            view.setFitHeight(453);
+            view.setFitWidth(300);
+            view.setPreserveRatio(true);
+            Button button = new Button();
+            button.setPrefSize(300, 453);
+            button.setGraphic(view);
+            buttonList.add(button);
+            VBox buttonContainer = new VBox();
+            buttonContainer.getChildren().addAll(button,new javafx.scene.control.Label(appName.get(i)));
+            buttonContainer.setAlignment(Pos.CENTER);
+            gridPane.add(buttonContainer, i%4, i/4, 1, 1);
+        }
 
         VBox root = new VBox(topButtons, new ScrollPane(gridPane));
         root.setSpacing(10);
@@ -78,36 +89,40 @@ public class AppCenterView {
                 .collect(Collectors.toList()));
         categoryChoiceBox.setValue(Category.UTILITIES); // Set a default value
 
-        TextInputDialog dialog = new TextInputDialog();
+        Dialog<Category> dialog = new Dialog<>();
         dialog.setTitle("Add App");
-        dialog.setHeaderText("Select Category and Enter App Name");
+        dialog.setHeaderText("Select Category");
 
-        VBox content = new VBox(categoryChoiceBox, dialog.getDialogPane().getContent());
-        VBox.setMargin(categoryChoiceBox, new Insets(0, 0, 0, 20));
+        VBox content = new VBox(categoryChoiceBox);
+        VBox.setMargin(categoryChoiceBox, new Insets(10));
         dialog.getDialogPane().setContent(content);
 
-        Optional<String> result = dialog.showAndWait();
-
-        if (result.isPresent()) {
-            Category selectedCategory = categoryChoiceBox.getValue();
-            String appName = result.get();
-
-            FileChooser appChooser = new FileChooser();
-            appChooser.setTitle("Select App Executable");
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Executable Files (*.exe)", "*.exe");
-            appChooser.getExtensionFilters().add(extFilter);
-            File selectedApp = appChooser.showOpenDialog(stage);
-
-            FileChooser iconChooser = new FileChooser();
-            FileChooser.ExtensionFilter iconFilter = new FileChooser.ExtensionFilter("JPEG files (*.jpg)", "*.jpg");
-            iconChooser.getExtensionFilters().add(iconFilter);
-            File selectedIcon = iconChooser.showOpenDialog(stage);
-
-            if (selectedApp != null) {
-                return Optional.of(CardCreator.createCard(selectedCategory, appName, selectedApp.getAbsolutePath(), selectedIcon.getAbsolutePath()));
+        ButtonType categoryButtonType = new ButtonType("Choice Category", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(categoryButtonType, ButtonType.CANCEL);
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == categoryButtonType) {
+                return categoryChoiceBox.getValue();
             }
-        }
-        return Optional.empty();
+            return null;
+        });
+
+        Optional<Category> selectedCategory = dialog.showAndWait();
+
+        FileChooser appChooser = new FileChooser();
+        appChooser.setTitle("Select App Executable");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Executable Files (*.exe)", "*.exe");
+        appChooser.getExtensionFilters().add(extFilter);
+        File selectedApp = appChooser.showOpenDialog(stage);
+        int dotIndex = selectedApp.getName().lastIndexOf(".");
+        String appName = selectedApp.getName().substring(0, dotIndex);
+
+        FileChooser iconChooser = new FileChooser();
+        iconChooser.setTitle("Select Image App");
+        FileChooser.ExtensionFilter iconFilter = new FileChooser.ExtensionFilter("JPEG files (*.jpg)", "*.jpg");
+        iconChooser.getExtensionFilters().add(iconFilter);
+        File selectedIcon = iconChooser.showOpenDialog(stage);
+
+        return Optional.of(CardCreator.createCard(selectedCategory.get(), appName, selectedApp.getAbsolutePath(), selectedIcon.getAbsolutePath()));
     }
 
     public Optional<CardView> showAppRemoveDialog(List<CardView> appList, List<String> appNames) {
@@ -166,7 +181,7 @@ public class AppCenterView {
     public Optional<Category> showFilterDialog() {
         ChoiceBox<Category> categoryChoiceBox = new ChoiceBox<>();
         categoryChoiceBox.getItems().addAll(Category.values());
-        categoryChoiceBox.setValue(Category.UTILITIES); // Set a default value
+        categoryChoiceBox.setValue(filterCategory); // Set a default value
 
         Dialog<Category> dialog = new Dialog<>();
         dialog.setTitle("Filter Apps");
@@ -184,7 +199,9 @@ public class AppCenterView {
             }
             return null;
         });
+
         Optional<Category> result = dialog.showAndWait();
+        filterCategory = result.get();
         return result;
     }
 

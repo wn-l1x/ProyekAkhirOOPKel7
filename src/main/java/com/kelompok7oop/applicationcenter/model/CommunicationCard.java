@@ -1,4 +1,4 @@
-package com.kelompok7oop.applicationcenter;
+package com.kelompok7oop.applicationcenter.model;
 public class CommunicationCard extends CardView
 {
     public CommunicationCard(String appName, String filePath, String iconPath) {

@@ -1,4 +1,5 @@
-package com.kelompok7oop.applicationcenter;
+package com.kelompok7oop.applicationcenter.model;
+
 public class CardCreator
 {
     public static CardView createCard(Category category, String appName, String filePath, String iconPath){

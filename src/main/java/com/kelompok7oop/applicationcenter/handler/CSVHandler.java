@@ -1,4 +1,6 @@
-package com.kelompok7oop.applicationcenter;
+package com.kelompok7oop.applicationcenter.handler;
+import com.kelompok7oop.applicationcenter.model.CardView;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;

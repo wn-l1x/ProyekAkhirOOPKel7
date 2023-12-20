@@ -1,5 +1,5 @@
-package com.kelompok7oop.applicationcenter;
-import com.kelompok7oop.applicationcenter.CardView;
+package com.kelompok7oop.applicationcenter.model;
+import com.kelompok7oop.applicationcenter.model.CardView;
 
 public class UtilitiesCard extends CardView
 {
