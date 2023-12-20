@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 public class AppCenterView {
     private Stage stage;
-    private int i;
     private int size; // size dari si json
     public List<Button> buttonList = new ArrayList<Button>();
     public Button addButton;
@@ -56,7 +55,7 @@ public class AppCenterView {
         topButtons.setSpacing(20);
 
         GridPane gridPane = new GridPane();
-        for (i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             Image img = new Image(iconPath.get(i));
             ImageView view = new ImageView(img);
             view.setFitHeight(453);
