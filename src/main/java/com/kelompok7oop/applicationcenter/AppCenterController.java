@@ -23,19 +23,11 @@ public class AppCenterController {
         int size = appList.size();
         view.setSize(size);
         view.setStageMaximized();
-        view.initialize(model.getName(this.appList), model.getIcon(this.appList));
+        view.initialize(model.getName(this.appList), model.getIcon(this.appList), model.getPath(this.appList));
         setupEventHandlers();
     }
 
     private void setupEventHandlers() {
-        List<String> filePaths = model.getPath(this.appList); // Assuming you have a method to get file paths in your model
-
-        for (int i = 0; i < filePaths.size(); i++) {
-            final int index = i;
-
-            view.buttonList.get(i).setOnAction(event -> handleOpen(filePaths.get(index)));
-        }
-
         view.addButton.setOnAction(event -> {
             Optional<CardView> cardOptional = view.showAddAppDialog();
             cardOptional.ifPresent(card -> model.addAppList(card));
@@ -58,12 +50,6 @@ public class AppCenterController {
         });
 
     }
-   private void handleOpen(String filePath){
-       try {
-           java.awt.Desktop.getDesktop().open(new java.io.File(filePath));
-       } catch (IOException e) {
-           e.printStackTrace(); // Handle the exception appropriately
-       }
-    }
+
 }
 

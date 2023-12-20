@@ -22,6 +22,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +45,7 @@ public class AppCenterView {
         this.size = size;
     }
 
-    public void initialize(List<String> appName, List<String> iconPath) {
+    public void initialize(List<String> appName, List<String> iconPath, List<String> appPath) {
         stage.setMaximized(true);
         stage.setTitle("App Center");
         addButton = new Button("Add an App");
@@ -64,7 +65,10 @@ public class AppCenterView {
             Button button = new Button();
             button.setPrefSize(300, 453);
             button.setGraphic(view);
+            int finalI = i;
+            button.setOnAction(actionEvent -> handleOpen(appPath.get(finalI)));
             buttonList.add(button);
+
             VBox buttonContainer = new VBox();
             buttonContainer.getChildren().addAll(button,new javafx.scene.control.Label(appName.get(i)));
             buttonContainer.setAlignment(Pos.CENTER);
@@ -76,6 +80,14 @@ public class AppCenterView {
 
         Scene scene = new Scene(root, 595, 170);
         stage.setScene(scene);
+    }
+
+    private void handleOpen(String filePath){
+        try {
+            java.awt.Desktop.getDesktop().open(new java.io.File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
     }
 
     public void setStageMaximized(){
